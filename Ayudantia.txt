@@ -1,0 +1,116 @@
+
+/*Ayudantia HEAP
+Algoritmos y estructuras de datos
+Profesor: Alberto Ceballos
+*/
+
+#include <stdio.h>
+#include <math.h>
+#define MAX_VAL  6
+
+int ultimo;
+int H[MAX_VAL];
+
+
+
+void iniciar_heap()
+{
+    ultimo = 0;
+}
+
+int mejor(int lugar, int padre)
+{
+    if(lugar > padre)
+       return 1;
+
+    else
+       return 0;
+}
+
+
+int agregar(int numero)
+{
+    int temp = 0;
+    int lugar = 0;
+    int padre;
+
+    if (ultimo == MAX_VAL)
+    {
+        return 0;
+    }
+
+
+    H[ultimo] = numero;
+    lugar = ultimo;
+    padre = floor((lugar-1)/2);
+
+    while(padre >=0 && (mejor(H[lugar],H[padre]) == 1))
+    {
+        temp = H[lugar];
+        H[lugar] = H[padre];
+        H[padre] = temp;
+        lugar = padre;
+        padre = floor((lugar-1)/2);
+    }
+
+    return 1;
+}
+
+void eliminar(){
+	int lugar=0;
+	int p_izq,p_der;
+	while( lugar < ultimo){
+		p_izq=((lugar+1)*2)-1;
+		p_der=p_izq+1;
+		if(p_der==ultimo){
+			H[lugar]= H[p_izq];
+			lugar=p_izq;
+		}
+		else{
+			if(p_der < ultimo){
+				if(H[p_der]<H[p_izq]){
+					H[lugar]= H[p_izq];
+					lugar=p_izq;
+				}
+				else{
+					H[lugar]= H[p_der];
+					lugar=p_der;
+				}
+			}
+			else{
+				if(p_der >ultimo){
+					H[lugar]=H[ultimo-1];
+					lugar=ultimo;
+				}
+			}
+		}
+	}
+	ultimo--;
+}
+
+
+int main()
+{
+    int pedido;
+    int agregado;
+    int contador = 0;
+
+    iniciar_heap();
+
+    while(contador < MAX_VAL)
+    {
+       printf("\nIngrese el valor: ");
+       scanf("%d", &pedido);
+       agregado = agregar(pedido);
+
+       if(agregado == 1)
+          ultimo++;
+
+       contador++;
+    }
+
+    getch();
+    return 0;
+}
+
+
